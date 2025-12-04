@@ -15,12 +15,15 @@ export async function DELETE(
 
     const { id } = await params 
 
-    await prisma.task.deleteMany({
+    const result = await prisma.task.deleteMany({
       where: { 
         id: parseInt(id),
         userId: session.user.id 
       }
     })
+    if (result.count === 0) {
+      return NextResponse.json({ message: 'Task not found' }, { status: 404 })
+    }
     return NextResponse.json({ message: 'Task deleted' })
   } catch (error) {
     return NextResponse.json({ message: 'Error deleting task' }, { status: 500 })
