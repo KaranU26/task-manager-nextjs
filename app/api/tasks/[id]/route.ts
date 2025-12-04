@@ -35,12 +35,12 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params
     const session = await auth()
 
     if (!session?.user?.id) {
         return NextResponse.json({ message: 'Not authenticated' }, { status: 401 })
     }
+    const { id } = await params
     const body = await request.json()
     
     const updatedTask = await prisma.task.updateMany({
